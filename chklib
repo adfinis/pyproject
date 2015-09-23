@@ -45,4 +45,4 @@ try:
     mod = import_module(sys.argv[1])
     print(mod.__file__)
 except ImportError:
-    print("no%s" % sys.argv[1])
+    print(".no%s" % sys.argv[1])
