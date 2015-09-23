@@ -29,6 +29,10 @@ nosetest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE) $(HAS
 pytest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_MOCK)
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
+$(HAS_NOSETESTS):
+	pip install --upgrade nose
+	@pyenv rehash > /dev/null 2> /dev/null; true
+
 $(HAS_PYTEST):
 	pip install --upgrade pytest
 	@pyenv rehash > /dev/null 2> /dev/null; true
