@@ -9,6 +9,7 @@ HAS_PYTEST     := $(shell pyproject/chklib pytest)
 HAS_PYTEST_COV := $(shell pyproject/chklib pytest_cov)
 HAS_FREEZE     := $(shell pyproject/chklib freeze)
 HAS_HYPOTHESIS := $(shell pyproject/chklib hypothesis)
+HAS_MOCK       := $(shell pyproject/chklib mock)
 
 all:
 
@@ -22,10 +23,10 @@ $(PROJECT).egg-info:
 
 test: pep8 pylint pytest todo
 
-nosetest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE)
+nosetest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE) $(HAS_MOCK)
 	nosetests --cover-package=$(PROJECT) --with-coverage --cover-tests --cover-erase --cover-min-percentage=100
 
-pytest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE)
+pytest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_MOCK)
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
 $(HAS_PYTEST):
@@ -34,6 +35,9 @@ $(HAS_PYTEST):
 
 $(HAS_PYTEST_COV):
 	pip install --upgrade pytest-cov
+
+$(HAS_MOCK):
+	pip install --upgrade mock
 
 $(HAS_SPHINX):
 	pip install --upgrade sphinx
