@@ -1,5 +1,5 @@
-"""Checking for a library in current python"""
 #!/usr/bin/env python
+"""Checking for a library in current python"""
 
 import sys
 try:
