@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+
+import importlib
+import sys
+try:
+    mod = importlib.import_module(sys.argv[1])
+    print(mod.__file__)
+except ImportError:
+    print("no{}".format(sys.argv[1]))
