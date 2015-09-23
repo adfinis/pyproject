@@ -1,7 +1,7 @@
 SHELL := /usr/bin/env bash
 
-HAS_PEP8       := $(abspath $(shell which pep8 || echo nopep8))
-HAS_PYLINT     := $(abspath $(shell which pylint || echo nopylint))
+HAS_PEP8       := $(shell pyproject/chklib pep8)
+HAS_PYLINT     := $(shell pyproject/chklib pylint)
 HAS_COVERAGE   := $(shell pyproject/chklib coverage)
 HAS_SPHINX     := $(shell pyproject/chklib sphinx)
 HAS_NOSETESTS  := $(shell pyproject/chklib nose)
