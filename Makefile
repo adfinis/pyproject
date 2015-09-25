@@ -10,6 +10,7 @@ HAS_PYTEST_COV := $(shell pyproject/chklib pytest_cov)
 HAS_FREEZE     := $(shell pyproject/chklib freeze)
 HAS_HYPOTHESIS := $(shell pyproject/chklib hypothesis)
 HAS_MOCK       := $(shell pyproject/chklib mock)
+HAS_CAPTURELOG := $(shell pyproject/chklib pytest_capturelog)
 
 all:
 
@@ -26,8 +27,11 @@ test: pep8 pylint pytest todo
 nosetest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE) $(HAS_MOCK)
 	nosetests --cover-package=$(PROJECT) --with-coverage --cover-tests --cover-erase --cover-min-percentage=100
 
-pytest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_MOCK)
+pytest: $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_MOCK) $(HAS_CAPTURELOG)
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
+
+$(HAS_CAPTURELOG):
+	pip install --upgrade pytest-capturelog
 
 $(HAS_NOSETESTS):
 	pip install --upgrade nose
