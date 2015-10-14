@@ -10,7 +10,5 @@ Contains common files, like
 Dependencies
 ============
 
-Some dependencies are only used for old python compatibility for example mock.
-If you don't want mock to be installed create a file called .nomock in the root
-of your project. See the Makefile for library names that are installed. This
-works for any of those.
+If you need additional dependencies for test add them to .requirments.txt in the
+project.
