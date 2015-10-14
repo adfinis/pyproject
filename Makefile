@@ -26,13 +26,13 @@ install-edit: .requirements.txt $(PROJECT).egg-info
 $(PROJECT).egg-info:
 	pip install --upgrade -r .requirements.txt -e .
 
-isort:
-	isort -rc $(PROJECT)
-
 test: flake8 isort-check pytest todo test_ext
 
+isort:
+	isort -vb -ns "__init__.py" -sg "" -s "" -rc $(PROJECT)
+
 isort-check: $(HAS_ISORT)
-	isort -rc -c $(PROJECT)
+	isort -vb -ns "__init__.py" -sg "" -s "" -rc -c $(PROJECT)
 
 nosetest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE)
 	nosetests --cover-package=$(PROJECT) --with-coverage --cover-tests --cover-erase --cover-min-percentage=100
