@@ -41,7 +41,7 @@ pytest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTES
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
 flake8: $(HAS_FLAKE8)
-	flake8 --doctests -j auto --ignore=E221,E222,E251 $(PROJECT)
+	flake8 --doctests -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 doc: $(HAS_SPHINX) install-edit
 	make -C doc html
