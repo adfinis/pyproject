@@ -40,6 +40,15 @@ nosetest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_
 pytest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_CAPTURELOG)
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
+flake8: $(HAS_FLAKE8)
+	flake8 --doctests -j auto --ignore=E221,E222,E251 $(PROJECT)
+
+doc: $(HAS_SPHINX) install-edit
+	make -C doc html
+
+todo:
+	grep -Inr TODO $(PROJECT)
+
 $(HAS_CAPTURELOG):
 	pip install --upgrade pytest-capturelog
 
@@ -78,12 +87,3 @@ $(HAS_FREEZE):
 $(HAS_COVERAGE):
 	pip install --upgrade coverage
 	@pyenv rehash > /dev/null 2> /dev/null; true
-
-doc: $(HAS_SPHINX) install-edit
-	make -C doc html
-
-flake8: $(HAS_FLAKE8)
-	flake8 --doctests -j auto --ignore=E221,E222,E251 $(PROJECT)
-
-todo:
-	grep -Inr TODO $(PROJECT)
