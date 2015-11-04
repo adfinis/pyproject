@@ -80,7 +80,7 @@ $(HAS_SPHINX):
 $(HAS_HYPOTHESIS):
 	pip install --upgrade hypothesis
 	pip install --upgrade hypothesis-pytest
-	pip install --upgrade pytz
+	pip install --upgrade hypothesis-datetime
 
 $(HAS_FREEZE):
 	pip install --upgrade freeze
