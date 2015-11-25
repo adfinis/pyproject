@@ -84,6 +84,7 @@ $(HAS_HYPOTHESIS):
 
 $(HAS_FREEZE):
 	pip install --upgrade freeze
+	pip install --upgrade testfixtures
 
 $(HAS_COVERAGE):
 	pip install --upgrade coverage
