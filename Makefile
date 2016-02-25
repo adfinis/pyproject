@@ -22,7 +22,7 @@ test: flake8 isort-check pytest todo test_ext
 isort:
 	isort -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
 
-isort-check: .deps/isort
+isort-check: .deps/isort .deps/$(PROJECT)
 	isort -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
 
 nosetest: install-edit .deps/coverage .deps/hypothesis .deps/nose .deps/freeze .deps/testfixtures
