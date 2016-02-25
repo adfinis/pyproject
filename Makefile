@@ -1,15 +1,6 @@
 SHELL := /usr/bin/env bash
 
-HAS_FLAKE8     := $(shell pyproject/chklib flake8)
-HAS_COVERAGE   := $(shell pyproject/chklib coverage)
-HAS_SPHINX     := $(shell pyproject/chklib sphinx)
-HAS_NOSETESTS  := $(shell pyproject/chklib nose)
-HAS_PYTEST     := $(shell pyproject/chklib pytest)
-HAS_PYTEST_COV := $(shell pyproject/chklib pytest_cov)
-HAS_FREEZE     := $(shell pyproject/chklib freeze)
-HAS_HYPOTHESIS := $(shell pyproject/chklib hypothesis)
-HAS_CAPTURELOG := $(shell pyproject/chklib pytest_capturelog)
-HAS_ISORT      := $(shell pyproject/chklib isort)
+NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
 
 all:
 
@@ -21,9 +12,9 @@ test_ext:
 install: .requirements.txt
 	pip install --upgrade -r .requirements.txt .
 
-install-edit: .requirements.txt $(PROJECT).egg-info
+install-edit: .requirements.txt .deps/$(PROJECT)
 
-$(PROJECT).egg-info:
+.deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .
 
 test: flake8 isort-check pytest todo test_ext
@@ -31,61 +22,71 @@ test: flake8 isort-check pytest todo test_ext
 isort:
 	isort -vb -ns "__init__.py" -sg "" -s "" -rc $(PROJECT)
 
-isort-check: $(HAS_ISORT)
+isort-check: .deps/isort
 	isort -vb -ns "__init__.py" -sg "" -s "" -rc -c $(PROJECT)
 
-nosetest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_NOSETESTS) $(HAS_FREEZE)
+nosetest: install-edit .deps/coverage .deps/hypothesis .deps/nose .deps/freeze .deps/testfixtures
 	nosetests --cover-package=$(PROJECT) --with-coverage --cover-tests --cover-erase --cover-min-percentage=100
 
-pytest: install-edit $(HAS_COVERAGE) $(HAS_HYPOTHESIS) $(HAS_PYTEST) $(HAS_PYTEST_COV) $(HAS_FREEZE) $(HAS_CAPTURELOG)
+pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
-flake8: $(HAS_FLAKE8)
-	flake8 --doctests -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
-
-doc: $(HAS_SPHINX) install-edit
+tdoc: .deps/sphinx install-edit
+	touch doc/*
 	make -C doc html
 
+doc: .deps/sphinx install-edit
+	make -C doc html
+
+flake8: .deps/flake8
+	flake8 -j auto --ignore=E221,E222,E251 $(PROJECT)
+
 todo:
-	grep -Inr TODO $(PROJECT)
+	grep -Inr TODO $(PROJECT); true
 
-$(HAS_CAPTURELOG):
-	pip install --upgrade pytest-capturelog
+.deps/pytest_catchlog:
+	pip install --upgrade pytest-catchlog
 
-$(HAS_NOSETESTS):
+.deps/nose:
 	pip install --upgrade nose
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-$(HAS_ISORT):
+.deps/isort:
 	pip install --upgrade isort
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-$(HAS_FLAKE8):
+.deps/flake8:
 	pip install --upgrade flake8
 	pip install --upgrade pyflakes
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-$(HAS_PYTEST):
+.deps/pytest:
 	pip install --upgrade pytest
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-$(HAS_PYTEST_COV):
+.deps/pytest_cov:
 	pip install --upgrade pytest-cov
 
-$(HAS_SPHINX):
+.deps/sphinx: .deps/sphinx_rtd_theme
 	pip install --upgrade sphinx
-	pip install --upgrade sphinx_rtd_theme
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-$(HAS_HYPOTHESIS):
-	pip install --upgrade hypothesis
-	pip install --upgrade hypothesis-pytest
-	pip install --upgrade hypothesis-datetime
+.deps/sphinx_rtd_theme:
+	pip install --upgrade sphinx_rtd_theme
 
-$(HAS_FREEZE):
+.deps/hypothesis: .deps/hypothesispytest
+	pip install --upgrade hypothesis
+
+.deps/hypothesispytest:
+	pip install --upgrade hypothesis-pytest
+
+.deps/freeze:
 	pip install --upgrade freeze
+
+.deps/testfixtures:
 	pip install --upgrade testfixtures
 
-$(HAS_COVERAGE):
+.deps/coverage:
 	pip install --upgrade coverage
 	@pyenv rehash > /dev/null 2> /dev/null; true
+
