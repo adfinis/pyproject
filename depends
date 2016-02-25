@@ -1,0 +1,13 @@
+flake8
+coverage
+sphinx
+sphinx_rtd_theme
+nose
+pytest
+pytest_cov
+pytest_catchlog
+freeze
+hypothesis
+hypothesispytest
+isort
+testfixtures
