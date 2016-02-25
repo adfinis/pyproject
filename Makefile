@@ -39,7 +39,7 @@ doc: .deps/sphinx install-edit
 	make -C doc html
 
 flake8: .deps/flake8
-	flake8 -j auto --ignore=E221,E222,E251 $(PROJECT)
+	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 todo:
 	grep -Inr TODO $(PROJECT); true
