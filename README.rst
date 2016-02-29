@@ -28,6 +28,3 @@ Dependencies
 
 * If you need additional dependencies for tests add them to .requirments.txt in the
   project.
-
-* If you want to disable a standard dependency create a file .no* your project
-  root, for example to disable pytest_capturelog .nopytest_capturelog.
