@@ -6,7 +6,7 @@ Add this as a submodule to your project:
 
 .. code-block:: bash
 
-   git submodule add pyproject https://github.com/adfinis-sygroup/pyproject
+   git submodule add https://github.com/adfinis-sygroup/pyproject
 
 Contains common files, like
 
