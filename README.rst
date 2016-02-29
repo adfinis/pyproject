@@ -2,6 +2,12 @@
 Py Project
 ==========
 
+Add this as a submodule to your project:
+
+.. code-block:: bash
+
+   git submodule add pyproject https://github.com/adfinis-sygroup/pyproject
+
 Contains common files, like
 
 * Makefile
