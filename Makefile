@@ -14,9 +14,6 @@ install: .requirements.txt
 
 install-edit: .requirements.txt .deps/$(PROJECT)
 
-.deps/$(PROJECT):
-	pip install --upgrade -r .requirements.txt -e .
-
 test: flake8 pytest isort-check todo test_ext
 
 isort:
@@ -46,6 +43,17 @@ flake8: .deps/flake8
 
 todo:
 	grep -Inr TODO $(PROJECT); true
+
+all-deps: .deps/$(PROJECT) \
+          .deps/pytest_catchlog \
+          .deps/pytest \
+          .deps/hypothesis \
+          .deps/hypothesispytest \
+          .deps/freeze \
+          .deps/testfixtures
+
+.deps/$(PROJECT):
+	pip install --upgrade -r .requirements.txt -e .
 
 .deps/pytest_catchlog:
 	pip install --upgrade pytest-catchlog
