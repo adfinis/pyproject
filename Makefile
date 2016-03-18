@@ -32,7 +32,7 @@ pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_c
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
 pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
-	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
+	py.test $(PROJECT)
 
 tdoc: .deps/sphinx install-edit
 	touch doc/*
