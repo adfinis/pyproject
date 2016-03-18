@@ -31,6 +31,9 @@ nosetest: install-edit .deps/coverage .deps/hypothesis .deps/nose .deps/freeze .
 pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
+pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+	py.test --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
+
 tdoc: .deps/sphinx install-edit
 	touch doc/*
 	make -C doc html
