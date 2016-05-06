@@ -5,6 +5,8 @@ VERSION := $(shell pyproject/version $(VERSION_FILE))
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
 INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
 
+export PYBUILD_DISABLE=configure
+
 all:
 
 test_ext:
