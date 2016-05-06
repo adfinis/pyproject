@@ -53,10 +53,22 @@ merge-log: .deps/jinja2 .deps/click
 commit-log: .deps/jinja2 .deps/click
 	pyproject/genlog $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
 
+clean:
+	@if [ -e ".git" ]; then \
+		echo "Cleaning using git"; \
+		git clean -xdf -e .vagrant; \
+		git submodule foreach --recursive 'git clean -xdf -e .vagrant'; \
+	else \
+		echo "Cleaning using find" \
+		find . -name "*.pyc" -delete; \
+		find . -name "*.pyo" -delete; \
+		find . -name "__pycache__" -delete; \
+	fi
+
 update:
 	git submodule update --init --recursive
 
-dist: update
+dist: clean update
 	git checkout-index -a -f --prefix=$(INSTALL_PACKAGE)/
 	git submodule foreach --recursive 'git checkout-index -a -f --prefix=${PWD}/$(INSTALL_PACKAGE)$${toplevel#${PWD}}/$$path/'
 	tar cfz ../$(INSTALL_PACKAGE).orig.tar.gz $(INSTALL_PACKAGE)
