@@ -1,7 +1,9 @@
 SHELL := /usr/bin/env bash
-VERSION := $(PROJECT)/version.py
+VERSION_FILE := $(PROJECT)/version.py
 
+VERSION := $(shell pyproject/version $(VERSION_FILE))
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
+INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
 
 all:
 
@@ -46,13 +48,26 @@ todo:
 	grep -Inr TODO $(PROJECT); true
 
 merge-log: .deps/jinja2 .deps/click
-	pyproject/genlog -m $(GIT_HUB) $(VERSION) $(from) $(to)
+	pyproject/genlog -m $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
 
 commit-log: .deps/jinja2 .deps/click
-	pyproject/genlog $(GIT_HUB) $(VERSION) $(from) $(to)
+	pyproject/genlog $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
+
+update:
+	git submodule update --init --recursive
+
+dist: update
+	git checkout-index -a -f --prefix=$(INSTALL_PACKAGE)/
+	git submodule foreach --recursive 'git checkout-index -a -f --prefix=${PWD}/$(INSTALL_PACKAGE)$${toplevel#${PWD}}/$$path/'
+	tar cfz ../$(INSTALL_PACKAGE).orig.tar.gz $(INSTALL_PACKAGE)
+	rm -rf $(INSTALL_PACKAGE)
 
 log: .deps/jinja2 .deps/click .deps/dateutil
 	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
+
+deb: dist
+	dpkg-checkbuilddeps 2>&1 | cut -d ":" -f 3 | xargs sudo apt-get -y install
+	dpkg-buildpackage -us -uc
 
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .

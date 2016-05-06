@@ -8,7 +8,7 @@ import locale
 
 DEB_TEMPLATE = """
 {% for version in changelog %}
-{{ project }} ({{ version.version }}) stable; urgency=low
+{{ project }} ({{ version.version }}-1) stable; urgency=low
 
 {% for change in version.changes %}{% if change|is_list %}{% for subchange in change %}   - {{ subchange }}
 {% endfor %}{% else %}  * {{ change }}
