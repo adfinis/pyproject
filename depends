@@ -2,7 +2,6 @@ flake8
 coverage
 sphinx
 sphinx_rtd_theme
-nose
 pytest
 pytest_cov
 pytest_catchlog
