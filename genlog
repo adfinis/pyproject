@@ -50,12 +50,13 @@ TEMPLATE = """
     is_flag=True,
     help="Use this if you work with pull/merge-requests.",
 )
-@click.option(
-    '-p',
-    '--project-uri',
-    envvar='PROJECT_URI',
+@click.argument(
+    'project_uri',
     nargs=1,
-    help="Reference to a github project",
+)
+@click.argument(
+    'version_file',
+    nargs=1,
 )
 @click.argument(
     'start_commit',
@@ -65,9 +66,13 @@ TEMPLATE = """
     'end_commit',
     nargs=1,
 )
-def genlog(merge, project_uri, start_commit, end_commit):
+def genlog(merge, project_uri, version_file, start_commit, end_commit):
     """Generate CHANGELOG. Preprend the result to the CHANGELOG file and edit
     it as you wish.
+
+    PROJECT_URI     Reference to a github project
+
+    VERSION_FILE    File to read the version from
 
     START_COMMIT    Generate the log from this revision or tag
 
@@ -76,16 +81,17 @@ def genlog(merge, project_uri, start_commit, end_commit):
     logs     = list(get_commit_msgs(merge, start_commit, end_commit))
     author   = get_author()
     date     = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    version  = get_version(version_file)
     changes  = []
     template = jinja2.Template(TEMPLATE)
     for log in logs:
-        subject = log['subject']
-        revision = log['revision']
-        match = EXTRACT_PR.findall(subject)
-        body = log['body']
+        subject   = log['subject']
+        revision  = log['revision']
+        match     = EXTRACT_PR.findall(subject)
+        body      = log['body']
         bodysplit = body.split("LINEXSEP")
-        bs_len = len(bodysplit)
-        newbody = []
+        bs_len    = len(bodysplit)
+        newbody   = []
         for x, line in enumerate(bodysplit):
             if x < bs_len - 1:
                 next_line = bodysplit[x + 1]
@@ -122,10 +128,20 @@ def genlog(merge, project_uri, start_commit, end_commit):
         }
         changes.append(change)
     print(template.render(
+        version = version,
         author  = author,
         date    = date,
         changes = changes,
     ))
+
+
+def get_version(version_file):
+    """Get the version"""
+    env = {}
+    with open(version_file) as f:
+        code = compile(f.read(), version_file, 'exec')
+        exec(code, env)
+    return env['__version__']
 
 
 def get_commit_msgs(merge, start_commit, end_commit):

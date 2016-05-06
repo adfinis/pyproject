@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+VERSION := $(PROJECT)/version.py
 
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
 
@@ -45,10 +46,10 @@ todo:
 	grep -Inr TODO $(PROJECT); true
 
 merge-log:
-	$(PROJECT)/gelog -m $(form) $(to)
+	pyproject/genlog -m $(GIT_HUB) $(VERSION) $(from) $(to)
 
 commit-log:
-	$(PROJECT)/gelog $(form) $(to)
+	pyproject/genlog $(GIT_HUB) $(VERSION) $(from) $(to)
 
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .

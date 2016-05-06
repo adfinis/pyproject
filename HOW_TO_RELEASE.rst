@@ -8,7 +8,7 @@ will do the rest.
 Version
 =======
 
-Edit the version in $(PROJECT)/__version__.py
+Edit the version in $(PROJECT)/version.py
 
 Changelog
 =========
