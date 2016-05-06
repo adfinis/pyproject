@@ -1,6 +1,7 @@
 SHELL := /usr/bin/env bash
 VERSION_FILE := $(PROJECT)/version.py
 VERSION := $(shell pyproject/version $(VERSION_FILE))
+IS_PYPY := $(shell pyproject/is_pypy)
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
 INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
 FAIL_UNDER := 100
@@ -27,8 +28,13 @@ isort:
 isort-check: .deps/isort pytest
 	isort -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
 
+ifeq ($(IS_PYPY),True)
 pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
-	py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(PROJECT)
+		py.test --doctest-modules $(PROJECT)
+else
+pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(PROJECT)
+endif
 
 pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --doctest-modules $(PROJECT)
