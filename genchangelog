@@ -1,0 +1,143 @@
+#!/usr/bin/env python
+
+import codecs
+import click
+import dateutil.parser
+import jinja2
+import locale
+
+DEB_TEMPLATE = """
+{% for version in changelog %}
+{{ project }} ({{ version.version }}) stable; urgency=low
+
+{% for change in version.changes %}{% if change|is_list %}{% for subchange in change %}   - {{ subchange }}
+{% endfor %}{% else %}  * {{ change }}
+{% endif %}{% endfor %}
+ -- {{ version.author }}  {{ version.date|deb_date_format }}
+{% endfor %}
+"""  # noqa
+
+RST_TEMPLATE = """
+=========
+Changelog
+=========
+
+{{ project }}
+
+{% for version in changelog %}
+Version {{ version.version }}
+===============
+
+released {{ version.date}} by {{ version.author }}:
+
+{% for change in version.changes %}{% if change|is_list %}{% for subchange in change %}   - {{ subchange }}
+{% endfor %}{% else %}
+* {{ change }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+"""  # noqa
+
+
+@click.command()
+@click.argument(
+    'project',
+    nargs=1,
+)
+@click.argument(
+    'changelog',
+    nargs=1,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+    ),
+)
+@click.argument(
+    'deb_changelog',
+    nargs=1,
+    type=click.Path(
+        file_okay=True,
+        dir_okay=False,
+        writable=True,
+        readable=True,
+    ),
+)
+@click.argument(
+    'rst_changelog',
+    nargs=1,
+    type=click.Path(
+        file_okay=True,
+        dir_okay=False,
+        writable=True,
+        readable=True,
+    ),
+)
+def genlog(project, changelog, deb_changelog, rst_changelog):
+    """Generate derived changelog files. At the moment debian/changelog and
+    CHANGELOG.rst
+
+    CHANGELOG       Input changelog file
+
+    DEB_CHANGELOG   Output debian changelog
+
+    RST_CHANGELOG   Output CHANGELOG.rst
+    """
+    env = {}
+    with open(changelog) as f:
+        code = compile(f.read(), changelog, 'exec')
+        exec(code, env)
+    changelog_data = env['CHANGELOG']
+    gen_deb_log(project, changelog_data, deb_changelog)
+    gen_rst_log(project, changelog_data, rst_changelog)
+
+
+def gen_deb_log(project, changelog_data, outfile):
+    """Generate the debian/changelog"""
+    env = jinja2.Environment(autoescape=False)
+    env.filters["is_list"]         = is_list
+    env.filters["deb_date_format"] = deb_date_format
+    template = env.from_string(DEB_TEMPLATE)
+    res = template.render(project=project, changelog=changelog_data).strip()
+    with codecs.open(outfile, "w") as f:
+        f.write(res)
+        f.write("\n")
+
+
+def gen_rst_log(project, changelog_data, outfile):
+    """Generate the CHANGELOG.rst"""
+    env = jinja2.Environment(autoescape=False)
+    env.filters["is_list"] = is_list
+    template = env.from_string(RST_TEMPLATE)
+    res = template.render(project=project, changelog=changelog_data).strip()
+    with codecs.open(outfile, "w") as f:
+        f.write(res)
+        f.write("\n")
+
+
+def is_list(value):
+    """Returns the type of an object"""
+    return isinstance(value, list)
+
+
+def deb_date_format(value):
+    """Formating the debian data format"""
+    # Formatting this completely stupid format
+    # Thu, 25 Nov 2004 21:16:04 +0100
+    try:
+        try:
+            locale.setlocale(locale.LC_TIME, ('en_US', 'UTF-8'))
+        except locale.Error:
+            print(
+                "Warning could not set locale, "
+                "the changelog might be misformatted"
+            )
+        dt = dateutil.parser.parse(value)
+        return dt.strftime("%a, %d %b %Y %H:%M:%S %z")
+    finally:
+        locale.resetlocale()
+
+if __name__ == "__main__":
+    genlog()

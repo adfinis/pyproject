@@ -30,6 +30,14 @@ You can also generate a commit based changelog.
 
 from/to usually are git-tags, but it can be anything git recognizes.
 
+Then generate the actual changelog files:
+
+.. code-block:: bash
+
+   make log
+   git add -p
+   git commit -m "Bumped version and updated changelog"
+
 Testing
 =======
 

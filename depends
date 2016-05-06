@@ -13,3 +13,4 @@ isort
 testfixtures
 jinja2
 click
+dateutil

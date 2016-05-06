@@ -45,11 +45,14 @@ flake8: .deps/flake8
 todo:
 	grep -Inr TODO $(PROJECT); true
 
-merge-log:
+merge-log: .deps/jinja2 .deps/click
 	pyproject/genlog -m $(GIT_HUB) $(VERSION) $(from) $(to)
 
-commit-log:
+commit-log: .deps/jinja2 .deps/click
 	pyproject/genlog $(GIT_HUB) $(VERSION) $(from) $(to)
+
+log: .deps/jinja2 .deps/click .deps/dateutil
+	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
 
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .
