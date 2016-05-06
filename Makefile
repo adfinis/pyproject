@@ -95,7 +95,6 @@ rpm:
 
 .deps/flake8:
 	pip install --upgrade flake8
-	pip install --upgrade pyflakes==1.1.0
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/pytest:
