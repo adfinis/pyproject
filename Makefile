@@ -74,7 +74,7 @@ dist: clean update
 log: .deps/jinja2 .deps/click .deps/dateutil
 	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
 
-deb: dist install
+deb: dist
 	dpkg-checkbuilddeps 2>&1 | cut -d ":" -f 3 | xargs sudo apt-get -y install
 	dpkg-buildpackage -us -uc
 
