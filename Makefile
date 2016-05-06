@@ -1,9 +1,9 @@
 SHELL := /usr/bin/env bash
 VERSION_FILE := $(PROJECT)/version.py
-
 VERSION := $(shell pyproject/version $(VERSION_FILE))
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends)
 INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
+FAIL_UNDER := 100
 
 export PYBUILD_DISABLE := test
 
@@ -28,7 +28,7 @@ isort-check: .deps/isort pytest
 	isort -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
 
 pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
-	py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
+	py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(PROJECT)
 
 pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --doctest-modules $(PROJECT)
