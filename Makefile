@@ -128,3 +128,6 @@ deb: dist
 
 .deps/click:
 	pip install --upgrade click
+
+.deps/dateutil:
+	pip install --upgrade dateutil
