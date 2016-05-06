@@ -111,7 +111,7 @@ def genlog(merge, project_uri, version_file, start_commit, end_commit):
                         line = "%s." % line
             newbody.append(line)
         if match:
-            pr = match[0].group(0)
+            pr = match[0]
             uri = "%s/pull/%s" % (project_uri, pr)
         else:
             uri = "%s/commit/%s" % (project_uri, revision)
