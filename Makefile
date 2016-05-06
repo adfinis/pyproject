@@ -130,4 +130,4 @@ deb: dist
 	pip install --upgrade click
 
 .deps/dateutil:
-	pip install --upgrade dateutil
+	pip install --upgrade python-dateutil
