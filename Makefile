@@ -101,3 +101,5 @@ all-deps: .deps/$(PROJECT) \
 	pip install --upgrade coverage
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
+.deps/jinja2:
+	pip install --upgrade jinja2

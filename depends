@@ -11,3 +11,4 @@ hypothesis
 hypothesispytest
 isort
 testfixtures
+jinja2
