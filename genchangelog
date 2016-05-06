@@ -30,7 +30,7 @@ Version {{ version.version }}
 
 released {{ version.date}} by {{ version.author }}:
 
-{% for change in version.changes %}{% if change|is_list %}{% for subchange in change %}   - {{ subchange }}
+{% for change in version.changes %}{% if change|is_list %}{% for subchange in change %} - {{ subchange }}
 {% endfor %}{% else %}
 * {{ change }}
 {% endif %}
