@@ -44,13 +44,11 @@ flake8: .deps/flake8
 todo:
 	grep -Inr TODO $(PROJECT); true
 
-all-deps: .deps/$(PROJECT) \
-          .deps/pytest_catchlog \
-          .deps/pytest \
-          .deps/hypothesis \
-          .deps/hypothesispytest \
-          .deps/freeze \
-          .deps/testfixtures
+merge-log:
+	$(PROJECT)/gelog -m $(form) $(to)
+
+commit-log:
+	$(PROJECT)/gelog $(form) $(to)
 
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .
@@ -103,3 +101,6 @@ all-deps: .deps/$(PROJECT) \
 
 .deps/jinja2:
 	pip install --upgrade jinja2
+
+.deps/click:
+	pip install --upgrade click

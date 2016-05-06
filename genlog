@@ -1,0 +1,145 @@
+#!/usr/bin/env python
+
+"""Generate CHANGELOG
+
+Idea by Matt DeBoard
+http://mattdeboard.net/2014/01/14/automatic-changelog-generation-with-git/
+"""
+
+import click
+import json
+import subprocess
+
+# import os.path as op
+# import os
+# import re
+# import subprocess
+# from collections import deque
+
+GIT_FORMAT = (
+    '--pretty=format:{"revision": "%h", "subject": "%s", "body": "%b"},'
+)
+
+
+@click.command()
+@click.option(
+    '-m',
+    '--merge',
+    is_flag=True,
+    help="Use this if you work with pull/merge-requests.",
+)
+@click.option(
+    '-p',
+    '--project-uri',
+    envvar='PROJECT_URI',
+    nargs=1,
+    help="Reference to a github project",
+)
+@click.argument(
+    'start_commit',
+    nargs=1,
+)
+@click.argument(
+    'end_commit',
+    nargs=1,
+)
+def genlog(merge, project_uri, start_commit, end_commit):
+    """Generate CHANGELOG. Preprend the result to the CHANGELOG file and edit
+    it as you wish.
+
+    START_COMMIT    Generate the log from this revision or tag
+
+    END_COMMIT      Generate the log to this revision or tag
+    """
+    logs = get_commit_msgs(merge, start_commit, end_commit)
+
+
+def get_commit_msgs(merge, start_commit, end_commit):
+    """Get the commits in a parseable format"""
+    args = []
+    args.extend([
+        "git",
+        "log",
+        GIT_FORMAT,
+    ])
+    if merge:
+        args.append("--merges")
+    args.append("%s..%s" % (start_commit, end_commit))
+    res = subprocess.check_output(args).decode("UTF-8").strip()[:-1]
+    logs = json.loads("[%s]" % res)
+    import ipdb; ipdb.set_trace()
+    pass
+
+
+# def commit_msgs(start_commit, end_commit):
+#     """Run the git command that outputs the merge commits (both subject
+#     and body) to stdout, and return the output.
+#     """
+#     fmt_string = (b"'%%s%%n* [#{pr_num}]"
+#                   b"(%s/{pr_num}) - %%b'" % PROJECT_URI)
+#     return subprocess.check_output([
+#         "git",
+#         "log",
+#         "--pretty=format:%s" % fmt_string,
+#         "--merges", "%s..%s" % (start_commit, end_commit)])
+# 
+# 
+# def release_note_lines(msgs):
+#     """Parse the lines from git output and format the strings using the
+#     pull request number.
+#     """
+#     ptn = b"Merge pull request #(\d+).*\n([^\n]*)'$"
+#     pairs = re.findall(ptn, msgs, re.MULTILINE)
+#     return deque(body.format(pr_num=pr_num) for pr_num, body in pairs)
+# 
+# 
+# def release_header_line(version, release_date=None):
+#     release_date = release_date or datetime.date.today().strftime('%Y/%m/%d')
+#     return "## %s - %s" % (version, release_date)
+# 
+# 
+# def prepend(filename, lines, release_header=False):
+#     """Write `lines` (i.e. release notes) to file `filename`."""
+#     if op.exists(filename):
+#         with open(filename, 'r+') as f:
+#             first_line = f.read()
+#             f.seek(0, 0)
+#             f.write('\n\n'.join([lines, first_line]))
+#     else:
+#         with open(filename, 'w') as f:
+#             f.write(lines)
+#             f.write('\n')
+# 
+# 
+# if __name__ == "__main__":
+#     import argparse
+#     import datetime
+# 
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument('start_commit', metavar='START_COMMIT_OR_TAG')
+#     parser.add_argument('end_commit', metavar='END_COMMIT_OR_TAG')
+#     parser.add_argument('--filepath', '-f',
+#                         help="Absolute path to output file.")
+#     parser.add_argument('--tag', '-t', metavar='NEW_TAG')
+#     parser.add_argument(
+#         '--date', '-d', metavar='RELEASE_DATE',
+#         help="Date of release for listed patch notes. Use yyyy/mm/dd format.")
+#     args = parser.parse_args()
+#     start, end = args.start_commit, args.end_commit
+#     msgs  = commit_msgs(start, end)
+#     import ipdb; ipdb.set_trace()
+#     lines = release_note_lines(msgs)
+# 
+#     if args.tag:
+#         lines.appendleft(release_header_line(args.tag, args.date))
+# 
+#     lines = '\n'.join(lines)
+# 
+#     if args.filepath:
+#         filename = op.abspath(args.filepath)
+#         prepend(filename, lines)
+#     else:
+#         print(lines)
+
+if __name__ == "__main__":
+    genlog()
