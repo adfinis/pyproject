@@ -25,8 +25,12 @@ test: flake8 pytest isort-check todo test_ext
 isort:
 	isort -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
 
+ifeq ($(IS_PYPY),True)
+isort-check:
+else
 isort-check: .deps/isort pytest
 	isort -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
+endif
 
 ifeq ($(IS_PYPY),True)
 pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
