@@ -38,8 +38,20 @@ Then generate the actual changelog files:
    git add -p
    git commit -m "Bumped version and updated changelog"
 
+Releasing on PyPI
+=================
+
+.. code-block:: bash
+
+   make pypi
+
+If the package exists and your not a member of the project please ask me:
+ganwell@fangorn.ch
+
 Testing
 =======
+
+The packages will be published by our CI, but you can also test the build:
 
 .. code-block:: bash
 

@@ -89,6 +89,9 @@ deb: dist
 rpm:
 	python setup.py bdist_rpm
 
+pypi:
+	python setup.py sdist upload -s
+
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .
 
