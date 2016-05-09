@@ -2,14 +2,10 @@
 CHANGELOG = [
     {
         'version' : "1.0.0",
-        'date'    : "2016-05-06T19:40:42",
+        'date'    : "2016-05-06T19:40:42+0000",
         'author'  : "Jean-Louis Fuchs <ganwell@fangorn.ch>",
         'changes' : [
-            "#9f8ea2e Added CHANGELOG",
-            [
-                "https://github.com/adfinis-sygroup/pyaptly/commit/9f8ea2e",
-                "",
-            ],
+            "Initial version",
 
         ],
     },
