@@ -16,9 +16,9 @@ test_ext:
 	touch .requirements.txt
 
 install: .requirements.txt
-	pip install --upgrade -r .requirements.txt .
+	pip install --upgrade -r .requirements.txt
 
-install-edit: .requirements.txt .deps/$(PROJECT)
+install-edit: .requirements.txt | .deps/$(PROJECT)
 
 test: flake8 pytest isort-check todo test_ext
 
