@@ -23,13 +23,13 @@ install-edit: .requirements.txt | .deps/$(PROJECT)
 test: flake8 pytest isort-check todo test_ext
 
 isort:
-	isort -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
+	isort -b concurrent.futures -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
 
 ifeq ($(IS_PYPY),True)
 isort-check:
 else
 isort-check: .deps/isort pytest
-	isort -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
+	isort -b concurrent.futures -df -vb -ns "__init__.py" -sg "" -s "" -rc -c -p $(PROJECT) $(PROJECT)
 endif
 
 ifeq ($(IS_PYPY),True)
