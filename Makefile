@@ -148,3 +148,6 @@ pypi:
 
 .deps/dateutil:
 	pip install --upgrade python-dateutil
+
+.deps/cffi:
+	pip install --upgrade cffi
