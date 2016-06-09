@@ -12,6 +12,8 @@ all:
 
 test_ext:
 
+test_dep:
+
 .requirements.txt:
 	touch .requirements.txt
 
@@ -20,7 +22,7 @@ install: .requirements.txt
 
 install-edit: .requirements.txt | .deps/$(PROJECT)
 
-test: flake8 pytest isort-check todo test_ext
+test: test_dep flake8 pytest isort-check todo test_ext
 
 isort:
 	isort -b concurrent.futures -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
