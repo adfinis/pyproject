@@ -1,3 +1,5 @@
+.PHONY: doc
+
 SHELL := /usr/bin/env bash
 VERSION_FILE := $(PROJECT)/version.py
 VERSION := $(shell pyproject/version $(VERSION_FILE))
@@ -45,11 +47,11 @@ endif
 pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --doctest-modules $(PROJECT)
 
-tdoc: .deps/sphinx install-edit
+tdoc: | .deps/sphinx install-edit
 	touch doc/*
 	make -C doc html
 
-doc: .deps/sphinx install-edit
+doc: | .deps/sphinx install-edit
 	make -C doc html
 
 flake8: .deps/flake8
