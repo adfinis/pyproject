@@ -37,14 +37,14 @@ isort-check: .deps/isort pytest
 endif
 
 ifeq ($(IS_PYPY),True)
-pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 		py.test --doctest-modules $(PROJECT)
 else
-pytest: install-edit .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(PROJECT)
 endif
 
-pytest-no-cov: install-edit .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+pytest-no-cov: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures
 	py.test --doctest-modules $(PROJECT)
 
 tdoc: | .deps/sphinx install-edit
@@ -54,16 +54,16 @@ tdoc: | .deps/sphinx install-edit
 doc: | .deps/sphinx install-edit
 	make -C doc html
 
-flake8: .deps/flake8
+flake8: | .deps/flake8
 	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 todo:
 	grep -Inr TODO $(PROJECT); true
 
-merge-log: .deps/jinja2 .deps/click
+merge-log: | .deps/jinja2 .deps/click
 	pyproject/genlog -m $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
 
-commit-log: .deps/jinja2 .deps/click
+commit-log: | .deps/jinja2 .deps/click
 	pyproject/genlog $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
 
 clean:
@@ -87,7 +87,7 @@ dist: clean update
 	tar cfz ../$(INSTALL_PACKAGE).orig.tar.gz $(INSTALL_PACKAGE)
 	rm -rf $(INSTALL_PACKAGE)
 
-log: .deps/jinja2 .deps/click .deps/dateutil
+log: | .deps/jinja2 .deps/click .deps/dateutil
 	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
 
 deb: dist
@@ -121,14 +121,14 @@ pypi:
 .deps/pytest_cov:
 	pip install --upgrade pytest-cov
 
-.deps/sphinx: .deps/sphinx_rtd_theme
+.deps/sphinx: | .deps/sphinx_rtd_theme
 	pip install --upgrade sphinx
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/sphinx_rtd_theme:
 	pip install --upgrade sphinx_rtd_theme
 
-.deps/hypothesis: .deps/hypothesispytest
+.deps/hypothesis: | .deps/hypothesispytest
 	pip install --upgrade hypothesis
 
 .deps/hypothesispytest:
