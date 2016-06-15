@@ -16,7 +16,10 @@ import subprocess
 
 
 GIT_FORMAT = (
-    '--pretty=format:{"revision": "%h", "subject": "%s", "body": "%b"}EOFL'
+    '--pretty=format:{'
+    'STRXSEPrevisionSTRXSEP: STRXSEP%hSTRXSEP, '
+    'STRXSEPsubjectSTRXSEP: STRXSEP%sSTRXSEP, '
+    'STRXSEPbodySTRXSEP: STRXSEP%bSTRXSEP}EOFL'
 )
 
 EXTRACT_PR = re.compile("Merge pull request #(\d+) ")
@@ -151,11 +154,17 @@ def get_commit_msgs(merge, start_commit, end_commit):
         args.append("--merges")
     args.append("%s...%s" % (start_commit, end_commit))
     res = subprocess.check_output(args).decode("UTF-8").strip()[:-1]
+    # Escaping invalid json
+    res = "\\\"".join(res.split("\""))
+    res = "\"".join(res.split("STRXSEP"))
     lines = res.split("EOFL%s" % os.linesep)
     lines[-1] = lines[-1][:-3]
     for line in lines:
         if line:
             line = "LINEXSEP".join(line.split(os.linesep))
+            # Clean all \n \r depending on platform we need one or the other
+            line = "".join(line.split("\r"))
+            line = "".join(line.split("\n"))
             yield json.loads("%s" % line)
 
 
