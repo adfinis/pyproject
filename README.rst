@@ -28,6 +28,9 @@ Create the following Makefile in your project:
 
    test_ext:
       echo Execute custom tests
+      
+   my_custom_pytest: .deps/pytest
+      py.test .....
 
 Dependencies
 ============
