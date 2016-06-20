@@ -41,7 +41,7 @@ isort-check: .deps/isort pytest  ## Check the isort header order (used by test)
 endif
 
 ifeq ($(IS_PYPY),True)
-pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest
+pytest: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest
 		py.test --doctest-modules $(PROJECT)
 else
 pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
