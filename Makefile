@@ -30,7 +30,7 @@ install-edit: .requirements.txt | .deps/$(PROJECT)  ## Edit install pip install 
 
 test: test_dep flake8 pytest isort-check todo test_ext  ## Testing the project: flake8 pytest isort todo
 
-isort:  ## Sort the headers of the project
+isort: .deps/isort  ## Sort the headers of the project
 	isort -b concurrent.futures -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
 
 ifeq ($(IS_PYPY),True)
