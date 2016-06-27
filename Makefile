@@ -85,7 +85,7 @@ clean-all:  ## Clean, ATTENTION cleans everything not in git
 update:  ## Update submodules
 	git submodule update --init --recursive
 
-dist: clean update  ## Create dist for building debian packages (used by target deb)
+dist: clean-all update  ## Create dist for building debian packages (used by target deb)
 	git checkout-index -a -f --prefix=$(INSTALL_PACKAGE)/
 	git submodule foreach --recursive 'git checkout-index -a -f --prefix=${PWD}/$(INSTALL_PACKAGE)$${toplevel#${PWD}}/$$path/'
 	tar cfz ../$(INSTALL_PACKAGE).orig.tar.gz $(INSTALL_PACKAGE)
