@@ -95,7 +95,10 @@ log: | .deps/jinja2 .deps/click .deps/dateutil  ## Create log for packages (git 
 	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
 
 deb: dist  ## Build a debian
-	dpkg-checkbuilddeps 2>&1 | cut -d ":" -f 3 | xargs sudo apt-get -y install
+	sudo apt-get install -y  build-essential devscripts equivs
+	mk-build-deps
+	sudo dpkg -i *.deb
+	rm -rf *.deb
 	dpkg-buildpackage -us -uc
 
 rpm:  ## Build a rpm package
