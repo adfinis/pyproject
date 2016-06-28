@@ -8,6 +8,7 @@ IS_PYPY := $(shell pyproject/is_pypy 2> /dev/null)
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends > /dev/null 2> /dev/null)
 INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
 FAIL_UNDER := 100
+TESTDIR := $(PROJECT)
 
 export PYBUILD_DISABLE := test
 
@@ -42,14 +43,14 @@ endif
 
 ifeq ($(IS_PYPY),True)
 pytest: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest
-		py.test --doctest-modules $(PROJECT)
+		py.test --doctest-modules $(TESTDIR)
 else
 pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
-		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(PROJECT)
+		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
 endif
 
 pytest-no-cov: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest without coverage
-	py.test --doctest-modules $(PROJECT)
+	py.test --doctest-modules $(TESTDIR)
 
 tdoc: | .deps/sphinx install-edit  ## Regenerate doc
 	touch doc/*
