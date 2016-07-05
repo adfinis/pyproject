@@ -23,6 +23,7 @@ Create the following Makefile in your project:
 .. code-block:: Makefile
 
    PROJECT := [project-package-dir]
+   GIT_HUB := https://[github-or-gitlab-url]
 
    include pyproject/Makefile
 
