@@ -5,10 +5,11 @@ import click
 import dateutil.parser
 import jinja2
 import locale
+import os
 
 DEB_TEMPLATE = """
 {% for version in changelog %}
-{{ project }} ({{ version.version }}-1) stable; urgency=low
+{{ project }} ({{ version.version }}-1{{ version_suffix }}) stable; urgency=low
 
 {% for change in version.changes %}{% if change|is_list %}{% for subchange in change %}   - {{ subchange }}
 {% endfor %}{% else %}  * {{ change }}
@@ -100,7 +101,12 @@ def gen_deb_log(project, changelog_data, outfile):
     env.filters["is_list"]         = is_list
     env.filters["deb_date_format"] = deb_date_format
     template = env.from_string(DEB_TEMPLATE)
-    res = template.render(project=project, changelog=changelog_data).strip()
+    adsy_version_suffix = os.environ.get("ADSY_VERSION_SUFFIX", "")
+    res = template.render(
+        project=project,
+        changelog=changelog_data,
+        version_suffix=adsy_version_suffix
+    ).strip()
     with codecs.open(outfile, "w") as f:
         f.write(res)
         f.write("\n")

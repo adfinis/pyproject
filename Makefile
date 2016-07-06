@@ -89,6 +89,9 @@ update:  ## Update submodules
 dist: clean-all update  ## Create dist for building debian packages (used by target deb)
 	git checkout-index -a -f --prefix=$(INSTALL_PACKAGE)/
 	git submodule foreach --recursive 'git checkout-index -a -f --prefix=${PWD}/$(INSTALL_PACKAGE)$${toplevel#${PWD}}/$$path/'
+	make log
+	cp debian/changelog $(INSTALL_PACKAGE)/debian/changelog
+	cp CHANGELOG.rst $(INSTALL_PACKAGE)/CHANGELOG.rst
 	tar cfz ../$(INSTALL_PACKAGE).orig.tar.gz $(INSTALL_PACKAGE)
 	rm -rf $(INSTALL_PACKAGE)
 
