@@ -59,6 +59,13 @@ tdoc: | .deps/sphinx install-edit  ## Regenerate doc
 doc: | .deps/sphinx install-edit  ## Generate doc
 	make -C doc html
 
+coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum enforced by the CI)
+	if [ -e ".coafile" ]; then \
+		coala --save; \
+	else \
+		coala --files="$(PROJECT)/**/*.py" --bears=PEP8Bear,PyDocStyleBear,PyLintBear --save; \
+	fi
+
 flake8: | .deps/flake8  ## Run flake8 test
 	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
@@ -166,3 +173,7 @@ pypi:  ## Release package to pypi
 
 .deps/cffi:
 	pip install --upgrade cffi
+
+.deps/coalib:
+	pip install --upgrade coala-bears
+	@pyenv rehash > /dev/null 2> /dev/null; true
