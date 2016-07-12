@@ -61,7 +61,7 @@ doc: | .deps/sphinx install-edit  ## Generate doc
 
 coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum enforced by the CI)
 	if [ -e ".coafile" ]; then \
-		coala --save; \
+		coala; \
 	else \
 		coala --files="$(PROJECT)/**/*.py" --bears=PEP8Bear,PyDocStyleBear,PyLintBear --save; \
 	fi

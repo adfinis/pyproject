@@ -1,0 +1,24 @@
+[Default]
+editor = vim
+
+[Python-test]
+files = c4irp/**/*_test.py
+bears = SpaceConsistencyBear,PEP8Bear,PyDocStyleBear,PyLintBear
+pylint_disable = E0611,R0903,C0103,C0326,R0913,R0914,W0511,W0212,R0201,I0011
+pydocstyle_ignore = D102,D203
+pep_ignore = E221,E222,E251,E272,E241,E203
+use_spaces = true
+
+[Python]
+files = c4irp/**/*[!_test].py
+bears = SpaceConsistencyBear,PEP8Bear,PyDocStyleBear,PyLintBear
+pylint_disable = E0611,R0903,C0103,C0326,R0913,R0914,W0511,R0201,I0011
+pydocstyle_ignore = D102,D203
+pep_ignore = E221,E222,E251,E272,E241,E203
+use_spaces = true
+
+[Cfiles]
+files = src/**/*.c
+bears = SpaceConsistencyBear,ClangBear,CPPCheckBear
+use_spaces = true
+clang_cli_options = -Ilibuv/include
