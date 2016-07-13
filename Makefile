@@ -29,7 +29,7 @@ install: .requirements.txt  ## Standard pip install including .requirements.txt 
 
 install-edit: .requirements.txt | .deps/$(PROJECT)  ## Edit install pip install -e
 
-test: test_dep flake8 pytest isort-check todo test_ext  ## Testing the project: flake8 pytest isort todo
+test: test_dep flake8 pytest isort-check todo | test_ext  ## Testing the project: flake8 pytest isort todo
 
 isort: .deps/isort  ## Sort the headers of the project
 	isort -b concurrent.futures -vb -ns "__init__.py" -sg "" -s "" -rc -p $(PROJECT) $(PROJECT)
