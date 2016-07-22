@@ -5,6 +5,7 @@ sphinx_rtd_theme
 pytest
 pytest_cov
 pytest_catchlog
+pytest_mock
 freeze
 hypothesis
 hypothesispytest

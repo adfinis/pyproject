@@ -42,14 +42,14 @@ isort-check: .deps/isort pytest  ## Check the isort header order (used by test)
 endif
 
 ifeq ($(IS_PYPY),True)
-pytest: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest
+pytest: install-edit | .deps/pytest   ## Run pytest
 		py.test --doctest-modules $(TESTDIR)
 else
-pytest: install-edit | .deps/coverage .deps/hypothesis .deps/pytest .deps/pytest_cov .deps/pytest_catchlog .deps/freeze .deps/testfixtures
+pytest: install-edit | .deps/pytest  .deps/coverage .deps/pytest_cov
 		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
 endif
 
-pytest-no-cov: install-edit | .deps/hypothesis .deps/pytest .deps/pytest_catchlog .deps/freeze .deps/testfixtures  ## Run pytest without coverage
+pytest-no-cov: install-edit | .deps/pytest  ## Run pytest without coverage
 	py.test --doctest-modules $(TESTDIR)
 
 tdoc: | .deps/sphinx install-edit  ## Regenerate doc
@@ -70,7 +70,7 @@ flake8: | .deps/flake8  ## Run flake8 test
 	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 todo:  ## Show todos in code
-	grep -Inr TODO $(PROJECT); true
+	grep -Inr TODO $(PROJECT) Makefile; true
 
 merge-log: | .deps/jinja2 .deps/click  ## Create changelog -> make merge-log from=w.x to=y.z
 	pyproject/genlog -m $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
@@ -121,9 +121,6 @@ pypi:  ## Release package to pypi
 .deps/$(PROJECT):
 	pip install --upgrade -r .requirements.txt -e .
 
-.deps/pytest_catchlog:
-	pip install --upgrade pytest-catchlog
-
 .deps/isort:
 	pip install --upgrade isort
 	@pyenv rehash > /dev/null 2> /dev/null; true
@@ -132,12 +129,18 @@ pypi:  ## Release package to pypi
 	pip install --upgrade flake8
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-.deps/pytest:
+.deps/pytest: | .deps/pytest_mock .deps/pytest_catchlog .deps/freeze .deps/testfixtures .deps/hypothesis
 	pip install --upgrade pytest
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/pytest_cov:
 	pip install --upgrade pytest-cov
+
+.deps/pytest_mock:
+	pip install --upgrade pytest-mock
+
+.deps/pytest_catchlog:
+	pip install --upgrade pytest-catchlog
 
 .deps/sphinx: | .deps/sphinx_rtd_theme
 	pip install --upgrade sphinx
