@@ -5,6 +5,7 @@ SHELL := /usr/bin/env bash
 VERSION_FILE := $(PROJECT)/version.py
 VERSION := $(shell pyproject/version $(VERSION_FILE) 2> /dev/null)
 IS_PYPY := $(shell pyproject/is_pypy 2> /dev/null)
+IS_PY2  := $(shell python -c "import sys; print(sys.version_info[0] == 2)")
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends > /dev/null 2> /dev/null)
 INSTALL_PACKAGE := $(PROJECT)_$(VERSION)
 FAIL_UNDER := 100
@@ -59,12 +60,16 @@ tdoc: | .deps/sphinx install-edit  ## Regenerate doc
 doc: | .deps/sphinx install-edit  ## Generate doc
 	make -C doc html
 
+ifeq ($(IS_PY2),True)
+coala:
+else
 coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum enforced by the CI)
 	if [ -e ".coafile" ]; then \
 		coala; \
 	else \
 		coala --files="$(PROJECT)/**/*.py" --bears=PEP8Bear,PyDocStyleBear,PyLintBear --save; \
 	fi
+endif
 
 flake8: | .deps/flake8  ## Run flake8 test
 	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
@@ -177,6 +182,10 @@ pypi:  ## Release package to pypi
 .deps/cffi:
 	pip install --upgrade cffi
 
+ifeq ($(IS_PY2),True)
+.deps/coalib:
+else
 .deps/coalib:
 	pip install --upgrade coala-bears
 	@pyenv rehash > /dev/null 2> /dev/null; true
+endif
