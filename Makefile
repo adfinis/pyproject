@@ -114,6 +114,7 @@ deb: dist  ## Build a debian
 	sudo apt-get install -y  build-essential devscripts equivs
 	mk-build-deps
 	sudo dpkg -i *.deb
+	sudo apt-get install -f -y
 	rm -rf *.deb
 	dpkg-buildpackage -us -uc
 
