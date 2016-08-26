@@ -131,9 +131,30 @@ pypi:  ## Release package to pypi
 	pip install --upgrade isort
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-.deps/flake8:
-	pip install --upgrade flake8
+.deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_pep3101 .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_future_import .deps/flake8_comprehensions
+	pip install --upgrade 'flake8<3.0.0'
 	@pyenv rehash > /dev/null 2> /dev/null; true
+
+.deps/flake8_mock:
+	pip install --upgrade flake8-mock -r pyproject/.flake8-req.txt
+
+.deps/flake8_tuple:
+	pip install --upgrade flake8-tuple -r pyproject/.flake8-req.txt
+
+.deps/flake8_pep3101:
+	pip install --upgrade flake8-pep3101 -r pyproject/.flake8-req.txt
+
+.deps/flake8_debugger:
+	pip install --upgrade flake8-debugger -r pyproject/.flake8-req.txt
+
+.deps/flake8_deprecated:
+	pip install --upgrade flake8-deprecated -r pyproject/.flake8-req.txt
+
+.deps/flake8_future_import:
+	pip install --upgrade flake8-future-import -r pyproject/.flake8-req.txt
+
+.deps/flake8_comprehensions:
+	pip install --upgrade flake8-comprehensions -r pyproject/.flake8-req.txt
 
 .deps/pytest: | .deps/pytest_mock .deps/pytest_catchlog .deps/freeze .deps/testfixtures .deps/hypothesis
 	pip install --upgrade pytest
