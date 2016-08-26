@@ -72,7 +72,7 @@ coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum
 endif
 
 flake8: | .deps/flake8  ## Run flake8 test
-	flake8 -j auto --min-version 2.7 --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
+	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 todo:  ## Show todos in code
 	grep -Inr TODO $(PROJECT) Makefile; true
@@ -131,7 +131,7 @@ pypi:  ## Release package to pypi
 	pip install --upgrade isort
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-.deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_pep3101 .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_future_import .deps/flake8_comprehensions
+.deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_pep3101 .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_comprehensions
 	pip install --upgrade 'flake8<3.0.0'
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
