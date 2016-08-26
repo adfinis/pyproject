@@ -72,7 +72,7 @@ coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum
 endif
 
 flake8: | .deps/flake8  ## Run flake8 test
-	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
+	flake8 -j auto --min-version 2.7 --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 todo:  ## Show todos in code
 	grep -Inr TODO $(PROJECT) Makefile; true
