@@ -45,13 +45,11 @@ endif
 ifeq ($(IS_PYPY),True)
 pytest: .requirements.txt .deps/pytest   ## Run pytest
 	rm -f *.so *.dylib
-	python setup.py build
 	pip install --upgrade -r .requirements.txt -e .
 	py.test --doctest-modules $(TESTDIR)
 else
 pytest: .requirements.txt .deps/pytest  .deps/coverage .deps/pytest_cov
 	rm -f *.so *.dylib
-	python setup.py build
 	pip install --upgrade -r .requirements.txt -e .
 	py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
 endif
@@ -136,7 +134,6 @@ pypi:  ## Release package to pypi
 	python setup.py sdist upload -s
 
 .deps/$(PROJECT):
-	python setup.py build
 	pip install --upgrade -r .requirements.txt -e .
 
 .deps/isort:
