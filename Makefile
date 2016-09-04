@@ -93,7 +93,7 @@ clean:  ## Clean, ATTENTION cleans everything not in git
 	@if [ -e ".git" ]; then \
 		echo "Cleaning using git"; \
 		git clean -xdf -e .vagrant -e FINJA -e .python-version; \
-		git submodule foreach --recursive 'git clean -xdf -e .vagrant -e FINJA' -e .python-version; \
+		git submodule foreach --recursive 'git clean -xdf -e .vagrant -e FINJA -e .python-version'; \
 	else \
 		echo "Cleaning using find" \
 		find . -name "*.pyc" -delete; \
