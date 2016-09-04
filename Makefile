@@ -148,7 +148,7 @@ pypi:  ## Release package to pypi
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/flake8_mock:
-	LC_ALL="en_US.UTF-8" pip install --upgrade flake8-mock -r pyproject/.flake8-req.txt
+	LC_ALL="C.UTF-8" pip install --upgrade flake8-mock -r pyproject/.flake8-req.txt
 
 .deps/flake8_tuple:
 	pip install --upgrade flake8-tuple -r pyproject/.flake8-req.txt
