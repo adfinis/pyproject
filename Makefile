@@ -44,9 +44,11 @@ endif
 
 ifeq ($(IS_PYPY),True)
 pytest: install-edit | .deps/pytest   ## Run pytest
+		python setup.py build -g
 		py.test --doctest-modules $(TESTDIR)
 else
 pytest: install-edit | .deps/pytest  .deps/coverage .deps/pytest_cov
+		python setup.py build -g
 		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
 endif
 
@@ -72,7 +74,7 @@ coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum
 endif
 
 flake8: | .deps/flake8  ## Run flake8 test
-	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203,S001 $(PROJECT)
+	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203,S001,D102 $(PROJECT)
 
 todo:  ## Show todos in code
 	grep -Inr TODO $(PROJECT) Makefile; true
@@ -125,6 +127,7 @@ pypi:  ## Release package to pypi
 	python setup.py sdist upload -s
 
 .deps/$(PROJECT):
+	python setup.py build -g
 	pip install --upgrade -r .requirements.txt -e .
 
 .deps/isort:
