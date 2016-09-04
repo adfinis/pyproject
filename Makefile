@@ -43,13 +43,17 @@ isort-check: .deps/isort pytest  ## Check the isort header order (used by test)
 endif
 
 ifeq ($(IS_PYPY),True)
-pytest: install-edit | .deps/pytest   ## Run pytest
-		python setup.py build -g
-		py.test --doctest-modules $(TESTDIR)
+pytest: .requirements.txt .deps/pytest   ## Run pytest
+	rm -f *.so *.dylib
+	python setup.py build
+	pip install --upgrade -r .requirements.txt -e .
+	py.test --doctest-modules $(TESTDIR)
 else
-pytest: install-edit | .deps/pytest  .deps/coverage .deps/pytest_cov
-		python setup.py build -g
-		py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
+pytest: .requirements.txt .deps/pytest  .deps/coverage .deps/pytest_cov
+	rm -f *.so *.dylib
+	python setup.py build
+	pip install --upgrade -r .requirements.txt -e .
+	py.test --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=$(FAIL_UNDER) --no-cov-on-fail $(TESTDIR)
 endif
 
 pytest-no-cov: install-edit | .deps/pytest  ## Run pytest without coverage
@@ -85,16 +89,21 @@ merge-log: | .deps/jinja2 .deps/click  ## Create changelog -> make merge-log fro
 commit-log: | .deps/jinja2 .deps/click  ## Create changelog -> make commit-log from=w.x to=y.z
 	pyproject/genlog $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
 
-clean-all:  ## Clean, ATTENTION cleans everything not in git
+clean:  ## Clean, ATTENTION cleans everything not in git
 	@if [ -e ".git" ]; then \
 		echo "Cleaning using git"; \
-		git clean -df -e .vagrant -e FINJA; \
-		git submodule foreach --recursive 'git clean -df -e .vagrant -e FINJA'; \
+		git clean -xdf -e .vagrant -e FINJA; \
+		git submodule foreach --recursive 'git clean -xdf -e .vagrant -e FINJA'; \
 	else \
 		echo "Cleaning using find" \
 		find . -name "*.pyc" -delete; \
 		find . -name "*.pyo" -delete; \
 		find . -name "__pycache__" -delete; \
+		find . -name "*.o" -delete; \
+		find . -name "*.obj" -delete; \
+		find . -name "*.a" -delete; \
+		find . -name "*.lib" -delete; \
+		find . -name "*.i" -delete; \
 	fi
 
 update:  ## Update submodules
@@ -127,7 +136,7 @@ pypi:  ## Release package to pypi
 	python setup.py sdist upload -s
 
 .deps/$(PROJECT):
-	python setup.py build -g
+	python setup.py build
 	pip install --upgrade -r .requirements.txt -e .
 
 .deps/isort:
