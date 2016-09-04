@@ -81,7 +81,7 @@ flake8: | .deps/flake8  ## Run flake8 test
 	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203,S001,D102 $(PROJECT)
 
 todo:  ## Show todos in code
-	grep -Inr TODO $(PROJECT) Makefile; true
+	grep -Inrs TODO $(PROJECT) Makefile; true
 
 merge-log: | .deps/jinja2 .deps/click  ## Create changelog -> make merge-log from=w.x to=y.z
 	pyproject/genlog -m $(GIT_HUB) $(VERSION_FILE) $(from) $(to)
