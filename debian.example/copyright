@@ -1,14 +1,14 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: pyaptly
-Upstream-Contact: Jean-Louis Fuchs - Adfinis-SyGroup <jean-louis.fuchs@adfinis-sygroup.ch>
+Upstream-Contact: Jean-Louis Fuchs - Adfinis SyGroup AG <jean-louis.fuchs@adfinis-sygroup.ch>
 Source: https://github.com/adfinis-sygroup/pyaptly
 
 Files: *
-Copyright: Jean-Louis Fuchs - Adfinis-SyGroup <jean-louis.fuchs@adfinis-sygroup.ch>
+Copyright: Jean-Louis Fuchs - Adfinis SyGroup AG <jean-louis.fuchs@adfinis-sygroup.ch>
 License: AGPLv3
 
 Files: debian/*
-Copyright: Jean-Louis Fuchs - Adfinis-SyGroup <jean-louis.fuchs@adfinis-sygroup.ch>
+Copyright: Jean-Louis Fuchs - Adfinis SyGroup AG <jean-louis.fuchs@adfinis-sygroup.ch>
 License: GPL-2+
 
 License: GPL-2+
@@ -699,7 +699,7 @@ License: AGPLv3
 # If you want to use GPL v2 or later for the /debian/* files use 
 # the following clauses, or change it to suit. Delete these two lines
 Files: debian/*
-Copyright: 2015 Adfinis SyGroup AG
+Copyright: 2016 Adfinis SyGroup AG
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
