@@ -119,7 +119,7 @@ dist: clean-all update  ## Create dist for building debian packages (used by tar
 log: | .deps/jinja2 .deps/click .deps/dateutil  ## Create log for packages (git add and git commit needed!)
 	pyproject/genchangelog $(PROJECT) CHANGELOG debian/changelog CHANGELOG.rst
 
-deb: dist  ## Build a debian
+deb: dist  ## Build a debian package
 	sudo apt-get install -y  build-essential devscripts equivs
 	mk-build-deps
 	sudo dpkg -i *.deb
