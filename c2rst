@@ -7,7 +7,6 @@ import sys
 _state = 0
 _func  = []
 
-
 class State(object):
     RST   = 0
     CFUNC = 1
@@ -16,15 +15,6 @@ for file_ in sys.argv[1:]:
     outfile = "%s.rst" % file_
     with codecs.open(file_, encoding="UTF-8") as in_:
         with codecs.open(outfile, mode="w", encoding="UTF-8") as out:
-            out.write("""
-.. raw:: html
-
-    <style>
-    h2  { display: none; }
-    </style>
-
-
-""")
             try:
                 line = next(in_)
                 while True:
@@ -44,10 +34,6 @@ for file_ in sys.argv[1:]:
                     else:
                         if line.startswith("//"):
                             func = " ".join(_func)
-                            out.write(os.linesep)
-                            out.write(func)
-                            out.write(os.linesep)
-                            out.write("=" * len(func))
                             out.write(os.linesep)
                             out.write(os.linesep)
                             out.write(".. c:function:: %s" % func)
