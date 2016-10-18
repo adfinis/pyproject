@@ -2,6 +2,11 @@
 Py Project
 ==========
 
+|License|
+
+.. |License| image:: https://img.shields.io/github/license/adfinis-sygroup/pyproject.svg?style=flat-square
+   :target: LICENSE
+
 Add this as a submodule to your project:
 
 .. code-block:: bash
@@ -44,3 +49,18 @@ Dependencies
 
 * If you need additional dependencies for tests add them to .requirments.txt in the
   project.
+
+Contributions
+=============
+
+Contributions are more than welcome! Please feel free to open new issues or
+pull requests.
+
+License 
+=======
+
+GNU GENERAL PUBLIC LICENSE Version 3
+
+See the `LICENSE`_ file.
+
+.. _LICENSE: LICENSE
