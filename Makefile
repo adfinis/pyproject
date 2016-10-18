@@ -4,6 +4,7 @@
 SHELL := /usr/bin/env bash
 VERSION_FILE := $(PROJECT)/version.py
 VERSION := $(shell pyproject/version $(VERSION_FILE) 2> /dev/null)
+PYTHON_VERSION := $(shell pyproject/python_version 2> /dev/null)
 IS_PYPY := $(shell pyproject/is_pypy 2> /dev/null)
 IS_PY2  := $(shell python -c "import sys; print(sys.version_info[0] == 2)")
 NOOP := $(shell pyproject/chklib $(PROJECT) < pyproject/depends > /dev/null 2> /dev/null)
