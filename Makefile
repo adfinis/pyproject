@@ -76,8 +76,11 @@ coala: | .deps/coalib  ## Guided additional code-analysis (more than the minimum
 	fi
 endif
 
-flake8: | .deps/flake8  ## Run flake8 test
-	flake8 -j auto --ignore=E221,E222,E251,E272,E241,E203,S001,D102 $(PROJECT)
+.flake8:
+	cp pyproject/.flake8 .flake8
+
+flake8: .flake8 | .deps/flake8  ## Run flake8 test
+	flake8 $(PROJECT)
 
 todo:  ## Show todos in code
 	grep -Inrs TODO $(PROJECT) Makefile; true
