@@ -1,7 +1,7 @@
 flake8
 flake8_mock
 flake8_tuple
-flake8_pep3101
+flake8_string_format
 flake8_docstrings
 flake8_debugger
 flake8_deprecated

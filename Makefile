@@ -144,7 +144,7 @@ pypi:  ## Release package to pypi
 	pip install --upgrade isort
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
-.deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_pep3101 .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_comprehensions
+.deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_string_format .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_comprehensions
 	pip install --upgrade 'flake8<3.0.0'
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
@@ -154,8 +154,8 @@ pypi:  ## Release package to pypi
 .deps/flake8_tuple:
 	pip install --upgrade flake8-tuple -r pyproject/.flake8-req.txt
 
-.deps/flake8_pep3101:
-	pip install --upgrade flake8-pep3101 -r pyproject/.flake8-req.txt
+.deps/flake8_string_format:
+	pip install --upgrade flake8-string-format -r pyproject/.flake8-req.txt
 
 .deps/flake8_debugger:
 	pip install --upgrade flake8-debugger -r pyproject/.flake8-req.txt
