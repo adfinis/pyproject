@@ -55,9 +55,9 @@ image: | .images .images/$(IMAGE_NAME)  ## Build the image
 
 .images:
 	$(SCMD) docker images --no-trunc | \
-    sed  --posix 's/^\([[:alnum:]_/]*\).*/\1/g' | \
-    grep -v -E 'REPOSITORY|^$$' | \
-    xargs -I DIR mkdir -p .images/DIR
+		sed  --posix 's/^\([[:alnum:]_/]*\).*/\1/g' | \
+		grep -v -E 'REPOSITORY|^$$' | \
+		xargs -I DIR mkdir -p .images/DIR
 
 .images/$(IMAGE_NAME): | .images
 	echo export HUID=\"$(shell id -u)\" > $(DOCKER_DIR)/hid.sh
