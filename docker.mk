@@ -42,7 +42,7 @@ root-shell: | image  ## Open a root-shell in container
 shell: | image  ## Open a shell in a container
 	$(SCMD) docker run -e "NCPU=$(NCPU)" -e "DISPLAY=$(DISPLAY)" \
 		-e "XAUTHORITY=$(XAUTHORITY)" -e "TERM=$(TERM)" \
-		-u $(shell id -u) -h $(shell hostname) \
+		-u $(shell id -u) -h "$(shell hostname)-$(IMAGE_NAME)" \
 		-v "$(PWD)":/host -v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v "$(HOME)/.Xauthority:$(HOME)/.Xauthority" \
 		-it $(IMAGE_NAME) /bin/bash; true
