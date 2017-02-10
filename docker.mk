@@ -62,7 +62,7 @@ image: | .images .images/$(IMAGE_NAME)  ## Build the image
 .images/$(IMAGE_NAME): | .images
 	echo export HUID=\"$(shell id -u)\" > $(DOCKER_DIR)/hid.sh
 	echo export HNAME=\"$(shell id -n -u)\" >> $(DOCKER_DIR)/hid.sh
-	echo 'if which useradd; then' >> $(DOCKER_DIR)/hid.sh
+	echo 'if command -v useradd >/dev/null 2>&1; then' >> $(DOCKER_DIR)/hid.sh
 	echo '    useradd -u "$$HUID" "$$HNAME" 2> /dev/null' >> $(DOCKER_DIR)/hid.sh
 	echo 'else' >> $(DOCKER_DIR)/hid.sh
 	echo '    adduser -u "$$HUID" "$$HNAME" 2> /dev/null' >> $(DOCKER_DIR)/hid.sh
