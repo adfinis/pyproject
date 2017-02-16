@@ -42,7 +42,7 @@ Dependencies
 
    test_dep: .deps/jinja2 my_custom_cextension
 
-* If you need additional dependencies for tests add them to .requirments.txt in the
+* If you need additional dependencies for tests add them to .requirements.txt in the
   project.
 
 Docker helper
