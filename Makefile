@@ -125,9 +125,7 @@ log: | .deps/jinja2 .deps/click .deps/dateutil  ## Create log for packages (git 
 
 deb: dist  ## Build a debian package
 	sudo apt-get install -y  build-essential devscripts equivs
-	mk-build-deps
-	sudo dpkg -i *.deb
-	sudo apt-get install -f -y
+	sudo mk-build-deps -i debian/control -t 'apt-get --no-install-recommends -y'
 	rm -rf *.deb
 	dpkg-buildpackage -us -uc
 
