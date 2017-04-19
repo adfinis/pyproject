@@ -76,7 +76,7 @@ Define the following variables
 
    DOCKER_DIR  := docker
    IMAGE_NAME  := myproject
-   DEFAULT_CMD := make test
+   DEFAULT_CMD := cd /host && make test
 
 Create DOCKER_DIR/Dockerfile
 
