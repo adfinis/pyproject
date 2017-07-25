@@ -40,7 +40,7 @@ root-shell: | image  ## Open a root-shell in container
 	$(SCMD) docker run -e "NCPU=$(NCPU)" -e "TERM=$(TERM)" -it $(IMAGE_NAME) /bin/bash; true
 
 shell: | image  ## Open a shell in a container
-	$(SCMD) docker run -e "NCPU=$(NCPU)" -e "DISPLAY=$(DISPLAY)" \
+	$(SCMD) docker run --rm -e "NCPU=$(NCPU)" -e "DISPLAY=$(DISPLAY)" \
 		-e "XAUTHORITY=$(XAUTHORITY)" -e "TERM=$(TERM)" \
 		-u $(shell id -u) -h "$(shell hostname)-$(IMAGE_NAME)" \
 		-v "$(PWD)":/host -v /tmp/.X11-unix:/tmp/.X11-unix \
@@ -48,7 +48,7 @@ shell: | image  ## Open a shell in a container
 		-it $(IMAGE_NAME) /bin/bash; true
 
 docker-run: | image  ## Run default command in docker
-	$(SCMD) docker run -e "NCPU=$(NCPU)" -u $(shell id -u) -v "$(PWD)":/host \
+	$(SCMD) docker run --rm -e "NCPU=$(NCPU)" -u $(shell id -u) -v "$(PWD)":/host \
 		-t $(IMAGE_NAME) /bin/bash -c "cd /host && $(DEFAULT_CMD)"
 
 image: | .images .images/$(IMAGE_NAME)  ## Build the image
