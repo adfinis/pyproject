@@ -55,7 +55,7 @@ image: | .images .images/$(IMAGE_NAME)  ## Build the image
 
 .images:
 	$(SCMD) docker images --no-trunc | \
-		sed  --posix 's/^\([[:alnum:]_/]*\).*/\1/g' | \
+		sed  --posix 's/^\([[:alnum:]_/-]*\).*/\1/g' | \
 		grep -v -E 'REPOSITORY|^$$' | \
 		xargs -I DIR mkdir -p .images/DIR
 
