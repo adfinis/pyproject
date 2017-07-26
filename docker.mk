@@ -37,7 +37,7 @@ clean-containers:  ## Remove old docker containers
 		true
 
 root-shell: | image  ## Open a root-shell in container
-	$(SCMD) docker run -e "NCPU=$(NCPU)" -e "TERM=$(TERM)" -it $(IMAGE_NAME) /bin/bash; true
+	$(SCMD) docker run --rm -e "NCPU=$(NCPU)" -e "TERM=$(TERM)" -it $(IMAGE_NAME) /bin/bash; true
 
 shell: | image  ## Open a shell in a container
 	$(SCMD) docker run --rm -e "NCPU=$(NCPU)" -e "DISPLAY=$(DISPLAY)" \
