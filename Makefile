@@ -143,7 +143,7 @@ pypi:  ## Release package to pypi
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/flake8: | .deps/flake8_mock .deps/flake8_tuple .deps/flake8_string_format .deps/flake8_debugger .deps/flake8_deprecated .deps/flake8_comprehensions
-	pip install --upgrade 'flake8<3.0.0'
+	pip install --upgrade 'flake8'
 	@pyenv rehash > /dev/null 2> /dev/null; true
 
 .deps/flake8_mock:
