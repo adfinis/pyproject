@@ -1,3 +1,65 @@
+===========================================================================
+Deprecated please use pipenv_, stdeb_, compose_ and meson_ for new projects
+===========================================================================
+
+.. _stdeb: https://pypi.org/project/stdeb/
+.. _pipenv: https://github.com/pypa/pipenv
+.. _compose: https://docs.docker.com/compose/
+.. _meson: https://mesonbuild.com/
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+
 ==========
 Py Project
 ==========
